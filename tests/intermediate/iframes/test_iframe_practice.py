@@ -18,18 +18,15 @@ This test demonstrates:
 """
 
 import time
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 
+def test_iframe(driver):
+    driver.get("https://www.automationtesting.co.uk/iframes.html")
+    time.sleep(2)
+    second_iframe = driver.find_element(By.CSS_SELECTOR, "iframe[src='https://www.youtube.com/embed/jNQXAC9IVRw']")
 
-browser = webdriver.Firefox()
-browser.maximize_window()
-browser.get("https://www.automationtesting.co.uk/iframes.html")
-time.sleep(2)
-second_iframe = browser.find_element(By.CSS_SELECTOR, "iframe[src='https://www.youtube.com/embed/jNQXAC9IVRw']")
+    driver.switch_to.frame(second_iframe)
+    time.sleep(2)
+    driver.find_element(By.ID, "movie_player").click()
+    time.sleep(3)
 
-browser.switch_to.frame(second_iframe)
-time.sleep(2)
-browser.find_element(By.ID, "movie_player").click()
-time.sleep(3)
-browser.quit()

@@ -14,38 +14,33 @@ This test demonstrates:
 
 """
 
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-import time
 
-browser = webdriver.Firefox()
-browser.get('https://cosmocode.io/automation-practice-webtable')
-browser.maximize_window()
+def test_web_tables(driver):
+    driver.get('https://cosmocode.io/automation-practice-webtable')
 
-# Scroll table into view (more flexible than hardcoding)
-table = browser.find_element(By.ID, 'countries')
-browser.execute_script("arguments[0].scrollIntoView();", table)
+    # Scroll table into view (more flexible than hardcoding)
+    table = driver.find_element(By.ID, 'countries')
+    driver.execute_script("arguments[0].scrollIntoView();", table)
 
-# Get rows and count them (excluding header)
-rows = table.find_elements(By.TAG_NAME, 'tr')
-row_count = len(rows) - 1 #Minus one to exclude the header
-print(f"Total data rows: {row_count}")
+    # Get rows and count them (excluding header)
+    rows = table.find_elements(By.TAG_NAME, 'tr')
+    row_count = len(rows) - 1  # Minus one to exclude the header
+    print(f"Total data rows: {row_count}")
 
-# Search for a specific value
-target_value = 'Argentina'
-found = False
-for row in rows[1:]:  # Skip header
-    cells = row.find_elements(By.TAG_NAME, 'td')
-    for cell in cells:
-        if target_value in cell.text:
-            print(f"Found value '{target_value}'")
-            found = True
+    # Search for a specific value
+    target_value = 'Argentina'
+    found = False
+    for row in rows[1:]:  # Skip header
+        cells = row.find_elements(By.TAG_NAME, 'td')
+        for cell in cells:
+            if target_value in cell.text:
+                print(f"Found value '{target_value}'")
+                found = True
+                break
+        if found:
             break
-    if found:
-        break
 
-if not found:
-    print(f"Target value '{target_value}' not found")
+    if not found:
+        print(f"Target value '{target_value}' not found")
 
-
-browser.quit()

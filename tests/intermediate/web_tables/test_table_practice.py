@@ -15,38 +15,31 @@ This test demonstrates:
 """
 
 
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-import time
 
-browser = webdriver.Firefox()
-browser.get('https://cosmocode.io/automation-practice-webtable')
-browser.maximize_window()
+def test_table_practice(driver):
+    driver.get('https://cosmocode.io/automation-practice-webtable')
 
+    table = driver.find_element(By.ID, 'countries')
+    driver.execute_script("arguments[0].scrollIntoView();", table)
 
-table = browser.find_element(By.ID, 'countries')
-browser.execute_script("arguments[0].scrollIntoView();", table)
+    rows = table.find_elements(By.TAG_NAME, 'tr')
+    row_count = len(rows) - 1
+    print(f"Total data rows: {row_count}")
 
-
-rows = table.find_elements(By.TAG_NAME, 'tr')
-row_count = len(rows) - 1
-print(f"Total data rows: {row_count}")
-
-
-target_value = 'Wakanda'
-found = False
-for row in rows[1:]:  # Skip header
-    cells = row.find_elements(By.TAG_NAME, 'td')
-    for cell in cells:
-        if target_value in cell.text:
-            print(f"Found value '{target_value}'")
-            found = True
+    target_value = 'Wakanda'
+    found = False
+    for row in rows[1:]:  # Skip header
+        cells = row.find_elements(By.TAG_NAME, 'td')
+        for cell in cells:
+            if target_value in cell.text:
+                print(f"Found value '{target_value}'")
+                found = True
+                break
+        if found:
             break
-    if found:
-        break
 
-if not found:
-    print(f"Target value '{target_value}' not found")
+    if not found:
+        print(f"Target value '{target_value}' not found")
 
 
-browser.quit()

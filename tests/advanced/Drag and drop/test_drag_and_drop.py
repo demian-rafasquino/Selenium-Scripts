@@ -15,24 +15,21 @@ This test demonstrates:
 
 """
 
-from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 import time
 
 
-browser = webdriver.Firefox()
-browser.maximize_window()
-browser.get("https://demoqa.com/droppable")
+def test_drag_and_drop(driver):
+    driver.get("https://demoqa.com/droppable")
 
-#Item to drag and destination
-item_to_drag = browser.find_element(By.ID, "draggable")
-destination = browser.find_element(By.ID, "droppable")
+    # Item to drag and destination
+    item_to_drag = driver.find_element(By.ID, "draggable")
+    destination = driver.find_element(By.ID, "droppable")
 
-#Action chains
-actions = ActionChains(browser)
+    # Action chains
+    actions = ActionChains(driver)
 
-#Using action chains to drag and drop
-actions.drag_and_drop(item_to_drag, destination).perform()
-time.sleep(3)
-browser.quit()
+    # Using action chains to drag and drop
+    actions.drag_and_drop(item_to_drag, destination).perform()
+    time.sleep(3)

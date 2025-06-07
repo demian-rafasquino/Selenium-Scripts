@@ -16,28 +16,25 @@ This test demonstrates:
 
 """
 
-from selenium import webdriver
+
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 import time
 
-browser = webdriver.Firefox()
-browser.maximize_window()
-browser.get("https://the-internet.herokuapp.com/horizontal_slider")
+def test_slider(driver):
+    driver.get("https://the-internet.herokuapp.com/horizontal_slider")
 
-#Finding slider
-slider = browser.find_element(By.XPATH, "//input[@type='range']")
+    # Finding slider
+    slider = driver.find_element(By.XPATH, "//input[@type='range']")
 
-actions = ActionChains(browser)
+    actions = ActionChains(driver)
 
-#Action chain to click and hold, then slide by offset
-actions.click_and_hold(slider).move_by_offset(50, 0).release().perform()
-time.sleep(3)
-actions.click_and_hold(slider).move_by_offset(25, 0).release().perform()
-time.sleep(3)
+    # Action chain to click and hold, then slide by offset
+    actions.click_and_hold(slider).move_by_offset(50, 0).release().perform()
+    time.sleep(3)
+    actions.click_and_hold(slider).move_by_offset(25, 0).release().perform()
+    time.sleep(3)
 
-#If the offset is more than the slider has, it just goes to the top
-actions.click_and_hold(slider).move_by_offset(500, 0).release().perform()
-time.sleep(3)
-
-browser.quit()
+    # If the offset is more than the slider has, it just goes to the top
+    actions.click_and_hold(slider).move_by_offset(500, 0).release().perform()
+    time.sleep(3)

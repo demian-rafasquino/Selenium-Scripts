@@ -14,29 +14,22 @@ This test demonstrates:
 
 """
 
-from http.client import responses
-from selenium import webdriver
+
+
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-import time
 import requests
 
+def test_broken_links(driver):
+    url = "https://jqueryui.com/"
+    driver.get(url)
 
-url = "https://jqueryui.com/"
-driver = webdriver.Firefox()
-driver.maximize_window()
-driver.get(url)
+    # Get all links from the page
+    all_links = driver.find_elements(By.TAG_NAME, "a")  # "a" is found in the html code
+    print(f"Total number of links in the page is: {len(all_links)}")
 
-#Get all links from the page
-all_links = driver.find_elements(By.TAG_NAME, "a")#"a" is found in the html code
-print(f"Total number of links in the page is: {len(all_links)}")
-
-
-#Loop through all available links one by one and get the href, check the response and print the broken ones
-for link in all_links:
-    href = link.get_attribute('href')
-    response = requests.get(href)
-    if response.status_code >= 400:
-        print(f"Broken Link: {href}(status code {response.status_code})")
-
-driver.quit()
+    # Loop through all available links one by one and get the href, check the response and print the broken ones
+    for link in all_links:
+        href = link.get_attribute('href')
+        response = requests.get(href)
+        if response.status_code >= 400:
+            print(f"Broken Link: {href}(status code {response.status_code})")
