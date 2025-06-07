@@ -17,32 +17,19 @@ This test demonstrates:
 
 """
 
+import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-import time
 
 
 browser = webdriver.Firefox()
 browser.maximize_window()
-browser.get("https://practice-automation.com/iframes/")
+browser.get("https://www.automationtesting.co.uk/iframes.html")
+time.sleep(2)
+second_iframe = browser.find_element(By.CSS_SELECTOR, "iframe[src='https://www.youtube.com/embed/jNQXAC9IVRw']")
 
-#Find specific iframe
-second_iframe = browser.find_element(By.ID, "iframe-2")
-
-#Switch to iframe
 browser.switch_to.frame(second_iframe)
-
-#Find element inside iframe (Selenium webdriver link in this case, for example)
-browser.find_element(By.XPATH, "//iframe[@id='iframe-2']").click()
+time.sleep(2)
+browser.find_element(By.ID, "movie_player").click()
 time.sleep(3)
-
-#Switch back to regular page and scroll up.
-browser.switch_to.default_content()
-driver.execute_script("window.scrollTo(0, document.body.scrollTop);")
-
-#Check we are at the top
-home_link = browser.find_element(By.XPATH, "//a[normalize-space()='Home']")
-assert home_link.is_displayed()
-
 browser.quit()

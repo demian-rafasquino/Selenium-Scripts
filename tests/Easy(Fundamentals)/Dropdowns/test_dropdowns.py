@@ -30,9 +30,10 @@ dropdown_page = 'https://the-internet.herokuapp.com/dropdown'
 driver.get(dropdown_page)
 driver.maximize_window()
 dropdown_element = driver.find_element(By.ID, 'dropdown')
-# select = Select(dropdown_element)
-#We can select the value by visible text, index or using a value
-#By visible text
+select = Select(dropdown_element)
+
+# We can select the value by visible text, index or using a value
+# By visible text
 # select.select_by_visible_text('Option 2')
 # #By index
 # select.select_by_index(1)

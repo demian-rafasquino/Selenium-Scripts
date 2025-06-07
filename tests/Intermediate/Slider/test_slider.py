@@ -39,4 +39,5 @@ time.sleep(3)
 #If the offset is more than the slider has, it just goes to the top
 actions.click_and_hold(slider).move_by_offset(500, 0).release().perform()
 time.sleep(3)
+
 browser.quit()
