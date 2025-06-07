@@ -14,27 +14,26 @@ This test demonstrates:
 
 """
 
-from selenium import webdriver
+
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
+
 import time
 
+def test_browser_commands(driver):
+    driver.get('https://opensource-demo.orangehrmlive.com')
+    driver.maximize_window()
+    time.sleep(2)
+    driver.find_element(By.CSS_SELECTOR, ".oxd-text.oxd-text--p.orangehrm-login-forgot-header").click()
+    time.sleep(3)
+    clicked_ok = driver.find_element(By.CSS_SELECTOR, "p[class='oxd-text oxd-text--p']")
+    if clicked_ok is not None:
+        print("All good!")
+    time.sleep(2)    # time.sleep is NOT the best practice. Kept here for begginer reference!
+    driver.back()
+    time.sleep(2)
+    driver.forward()
+    time.sleep(2)
+    driver.refresh()
 
-driver = webdriver.Firefox()
-driver.get('https://opensource-demo.orangehrmlive.com')
-driver.maximize_window()
-time.sleep(2)
-driver.find_element(By.CSS_SELECTOR, ".oxd-text.oxd-text--p.orangehrm-login-forgot-header").click()
-time.sleep(3)
-clicked_ok = driver.find_element(By.CSS_SELECTOR, "p[class='oxd-text oxd-text--p']")
-if clicked_ok is not None:
-    print("All good!")
 
-#time.sleep is NOT the best practice. Kept here for begginer reference!
-time.sleep(2)
-driver.back()
-time.sleep(2)
-driver.forward()
-time.sleep(2)
-driver.refresh()
-driver.close()
+
