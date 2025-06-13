@@ -19,56 +19,55 @@ This test demonstrates:
 
 
 from selenium.webdriver.common.by import By
-import time
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC, wait
+
 
 def test_javascript_alerts(driver):
+
     url = "https://the-internet.herokuapp.com/javascript_alerts"
 
     driver.get(url)
+
+    wait = WebDriverWait(driver, 10)  # ✅ Initialize explicit wait
 
     # Triggering the alert
     js_alert = driver.find_element(By.XPATH, "//button[normalize-space()='Click for JS Alert']")
     js_alert.click()
 
     # Switching to the alert
+    wait.until(EC.alert_is_present())
     alert = driver.switch_to.alert
-    alert_text = alert.text
-    print(alert_text)
-    time.sleep(3)
+    print(alert.text)
 
     # Accepting alert
     alert.accept()
-    time.sleep(2)
 
     # Clicking alert that comes with confirmation
-    js_confirm = driver.find_element(By.XPATH, "//button[normalize-space()='Click for JS Confirm']")
+    js_confirm =wait.until((EC.presence_of_element_located((By.CSS_SELECTOR, "button[onclick='jsConfirm()']"))))
     js_confirm.click()
 
     # Switching to alert
+    wait.until(EC.alert_is_present())
     confirm = driver.switch_to.alert
 
     # Checking the text to ensure I switched correctly
-    confirm_text = confirm.text
-    print(confirm_text)
-    time.sleep(2)
+    print(confirm.text)
 
     # Dismiss alert (Pressing cancel)
     confirm.dismiss()
-    time.sleep(2)
 
     # Now the prompt! On this one, I enter a text to close the alert
-    js_prompt = driver.find_element(By.XPATH, "//button[normalize-space()='Click for JS Prompt']")
+    js_prompt = wait.until((EC.presence_of_element_located((By.CSS_SELECTOR, "button[onclick='jsPrompt()']"))))
     js_prompt.click()
-    time.sleep(2)
 
     # Switch to alert and checking the content
+    wait.until(EC.alert_is_present())
     prompt = driver.switch_to.alert
-    prompt_text = prompt.text
-    print(prompt_text)
+    print(prompt.text)
 
     # Sending keys and accepting
     alert.send_keys("Demián")
-    time.sleep(2)
     alert.accept()
-    time.sleep(2)
+
 

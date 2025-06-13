@@ -16,24 +16,34 @@ This test demonstrates:
 
 
 from selenium.webdriver.common.by import By
-
 import time
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 def test_browser_commands(driver):
     driver.get('https://opensource-demo.orangehrmlive.com')
     driver.maximize_window()
-    time.sleep(2)
-    driver.find_element(By.CSS_SELECTOR, ".oxd-text.oxd-text--p.orangehrm-login-forgot-header").click()
-    time.sleep(3)
+    wait = WebDriverWait(driver, 10)
+
+    forgot_login = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, '.oxd-text.oxd-text--p.orangehrm-login-forgot-header')))
+    forgot_login.click()
+
+    reset_pass = wait.until( EC.visibility_of_element_located((By.CSS_SELECTOR, "button[type='submit']")))
     clicked_ok = driver.find_element(By.CSS_SELECTOR, "p[class='oxd-text oxd-text--p']")
     if clicked_ok is not None:
         print("All good!")
-    time.sleep(2)    # time.sleep is NOT the best practice. Kept here for begginer reference!
+
+    reset_pass = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "button[type='submit']")))
+
     driver.back()
-    time.sleep(2)
+    login_button = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "button[type='submit']")))
+
     driver.forward()
-    time.sleep(2)
+    reset_pass = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "button[type='submit']")))
+
     driver.refresh()
+    reset_pass = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "button[type='submit']")))
+
 
 
 

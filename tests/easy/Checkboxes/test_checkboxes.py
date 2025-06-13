@@ -15,23 +15,31 @@ This test demonstrates:
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-import time
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 def test_checkboxes(driver):
     driver.get('https://productbuilder.rednao.com/product/checkbox-demo/')
     driver.maximize_window()
     driver.execute_script('window.scrollTo(0, 0);')
 
-    # Checking and unchecking one.
-    driver.find_element(By.ID, 'field_2_2').click()
-    time.sleep(3)
-    driver.find_element(By.ID, 'field_2_2').click()
+    wait = WebDriverWait(driver, 10)
 
-    # Checking them all at once.
+    # Wait for and click the checkbox once
+    checkbox_1 = wait.until(EC.element_to_be_clickable((By.ID, 'field_2_2')))
+    checkbox_1.click()
 
-    checkboxes = driver.find_elements(By.XPATH, "//input[@type= 'checkbox']")
+    # Wait for it to be clickable again before unchecking
+    checkbox_1 = wait.until(EC.element_to_be_clickable((By.ID, 'field_2_2')))
+    checkbox_1.click()
+
+    # Wait until at least one checkbox is present before selecting all
+    wait.until(EC.presence_of_element_located((By.XPATH, "//input[@type='checkbox']")))
+    checkboxes = driver.find_elements(By.XPATH, "//input[@type='checkbox']")
+
+    # Check them all using the space key
     for checkbox in checkboxes:
-        checkbox.send_keys(Keys.SPACE)  # Using spacebar to check them
+        checkbox.send_keys(Keys.SPACE)
 
     checked_count = 0
 
@@ -41,9 +49,6 @@ def test_checkboxes(driver):
 
     expected_checked_count = 9
 
-    if checked_count == expected_checked_count:
-        print('Checkbox count verified')
-    else:
-        print('Checkbox count missmatch')
-    time.sleep(5)
+    assert checked_count == expected_checked_count, f"Expected {expected_checked_count} checkboxes, but found {checked_count}."
+    print('✅ Checkbox count verified')
 

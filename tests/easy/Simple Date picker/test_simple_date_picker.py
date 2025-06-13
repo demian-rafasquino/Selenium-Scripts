@@ -22,8 +22,11 @@ This test demonstrates:
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-import time
 from datetime import datetime, timedelta
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
+
 
 def test_simple_date_picker(driver):
     url = "https://www.globalsqa.com/demo-site/datepicker/"
@@ -39,7 +42,7 @@ def test_simple_date_picker(driver):
 
     simple_date_picker = driver.find_element(By.ID, "datepicker")
     simple_date_picker.click()
-    time.sleep(2)
+    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "ui-datepicker-div")))
 
     # Now, the date picker is open. Selecting current date
     current_date = datetime.now()
@@ -57,7 +60,10 @@ def test_simple_date_picker(driver):
 
     driver.find_element(By.CSS_SELECTOR, "#datepicker").send_keys(
         date_format + Keys.TAB)  # After sending a date, I need to click tab on the keyboard on this particular date picker. Although enter works too according to my testing
-    time.sleep(3)
+
+    # Wait for the date picker to be invisible
+    WebDriverWait(driver, 10).until(
+        EC.invisibility_of_element_located((By.ID, "ui-datepicker-div")))
 
 
 

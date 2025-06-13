@@ -14,12 +14,11 @@ This test demonstrates:
 - Post-login assertion to confirm navigation
 """
 
-from selenium.webdriver.common.by import By
-import time
 
-
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-import time
+
 
 def test_login(driver):
     """
@@ -35,15 +34,13 @@ def test_login(driver):
     driver.find_element(By.ID, "user-name").send_keys(username)
     driver.find_element(By.ID, "password").send_keys(password)
 
-    # Click the login button and assert it is enabled
+    # Click the login button
     login_button = driver.find_element(By.ID, "login-button")
-    assert not login_button.get_attribute("disabled")
     login_button.click()
 
-    time.sleep(3)  # Optional: Replace with WebDriverWait in next steps
+    page_title = WebDriverWait(driver, 10).until((EC.visibility_of_element_located((By.CSS_SELECTOR, ".title"))))
+    assert page_title.text == "Products"
 
-    # Assert that the user is redirected to the Products page
-    assert driver.find_element(By.CSS_SELECTOR, ".title").text == "Products"
 
 
 

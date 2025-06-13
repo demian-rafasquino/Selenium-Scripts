@@ -16,8 +16,9 @@ This test demonstrates:
 
 
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-import time
 
 def test_login_2(driver):
     driver.get("https://practicetestautomation.com/practice-test-login/")
@@ -38,9 +39,8 @@ def test_login_2(driver):
     driver.find_element(By.ID, "submit").click()
 
     # Asserting it logged in correctly by finding logout button
-    logged_in_text = driver.find_element(By.XPATH, "//h1[normalize-space()='Logged In Successfully']").text
-    assert logged_in_text == "Logged In Successfully", "Login failed"
-    time.sleep(3)
+    logged_in = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, ".wp-block-button__link.has-text-color.has-background.has-very-dark-gray-background-color")))
+    assert logged_in.text == "Log out"
 
 
 
