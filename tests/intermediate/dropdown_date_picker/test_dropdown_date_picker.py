@@ -22,13 +22,16 @@ from selenium.webdriver.common.by import By
 import time
 from datetime import datetime, timedelta
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
 def test_dropdown_date_picker(driver):
     url = "https://demo.automationtesting.in/Datepicker.html"
     driver.get(url)
 
     driver.find_element(By.ID, "datepicker2").click()
-    time.sleep(3)
+    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, ".datepick-popup")))
+
     current_date = datetime.now()
     print(current_date)
 
@@ -51,7 +54,7 @@ def test_dropdown_date_picker(driver):
     month_dropdown = driver.find_element(By.CSS_SELECTOR, "select[title='Change the month']")
     select = Select(month_dropdown)
     select.select_by_value(str(next_month_year))
-    Year_dropdown = driver.find_element(By.CSS_SELECTOR, "select[title='Change the year']")
-    select = Select(Year_dropdown)
+    year_dropdown = driver.find_element(By.CSS_SELECTOR, "select[title='Change the year']")
+    select = Select(year_dropdown)
     select.select_by_visible_text("2024")
     driver.find_element(By.LINK_TEXT, only_next_day).click()

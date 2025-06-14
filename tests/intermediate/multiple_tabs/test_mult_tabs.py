@@ -17,9 +17,10 @@ This test demonstrates:
 - Changing from one tab to another
 
 """
-
+from openpyxl.styles.builtins import title
 from selenium.webdriver.common.by import By
-import time
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 def test_mult_tabs(driver):
     driver.get("https://www.selenium.dev/")
@@ -37,11 +38,13 @@ def test_mult_tabs(driver):
     # Print current tab value
     current_tab = driver.current_window_handle
     print(current_tab)
-    time.sleep(3)
 
     # Clicking on an element
     driver.find_element(By.CSS_SELECTOR, '.getStarted_Sjon').click()
-    time.sleep(4)
+    page_title = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, "introduction"))
+    )
+    assert page_title.text == "Introduction"
 
     # Switching back to the first tab
     first_tab = driver.window_handles[0]

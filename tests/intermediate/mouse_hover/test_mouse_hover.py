@@ -17,7 +17,8 @@ This test demonstrates:
 
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
-import time
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 def test_mouse_hover(driver):
     url = "https://demo.automationtesting.in/Datepicker.html"
@@ -29,9 +30,8 @@ def test_mouse_hover(driver):
 
     actions = ActionChains(driver)
     hover_element = driver.find_element(By.XPATH, "//a[normalize-space()='SwitchTo']")
-    time.sleep(3)
     actions.move_to_element(hover_element).perform()
-    time.sleep(3)
+    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "a[href='Frames.html")))
     driver.find_element(By.CSS_SELECTOR, "a[href='Frames.html']").click()
 
 

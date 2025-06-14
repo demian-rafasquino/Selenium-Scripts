@@ -26,7 +26,7 @@ def test_broken_images(driver):
     images = driver.find_elements(By.TAG_NAME, "img")
     broken_images = []
 
-    # Checking the broken ones and apending them to an empty list
+    # Checking the broken ones and apppending them to an empty list
     for image in images:
         src = image.get_attribute("src")
         if src:

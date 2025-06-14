@@ -17,16 +17,17 @@ This test demonstrates:
 
 """
 
-import time
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
 def test_iframe(driver):
     driver.get("https://www.automationtesting.co.uk/iframes.html")
-    time.sleep(2)
-    second_iframe = driver.find_element(By.CSS_SELECTOR, "iframe[src='https://www.youtube.com/embed/jNQXAC9IVRw']")
+    second_iframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "iframe[src='https://www.youtube.com/embed/jNQXAC9IVRw']")))
+
 
     driver.switch_to.frame(second_iframe)
-    time.sleep(2)
-    driver.find_element(By.ID, "movie_player").click()
-    time.sleep(3)
+    video_player = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.ID, "movie_player")))
+    video_player.click()
+
 
