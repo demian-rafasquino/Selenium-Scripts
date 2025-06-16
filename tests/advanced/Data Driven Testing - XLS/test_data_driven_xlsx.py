@@ -1,4 +1,5 @@
-import time
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 #to interact with the excel sheet
 from openpyxl import load_workbook
@@ -16,18 +17,23 @@ def test_data_driven_xlsx(driver):
     # In basic English in case I forget: For every row in the iteration of this sheet, (minimum row 2, maximum infinite but only the ones that have values):
     # the username is the row 0 and the password is the row 1
     for row in sheet.iter_rows(min_row=2, max_row=sheet.max_row, values_only=True):
+        wait = WebDriverWait(driver, 10)
         user_name = row[0]
         password = row[1]
 
         driver.get('https://www.saucedemo.com/')
-        time.sleep(4)
+        wait.until(EC.presence_of_element_located((By.ID, 'user-name')))
+
         driver.find_element(By.ID, 'user-name').send_keys(user_name)
         driver.find_element(By.ID, 'password').send_keys(password)
         driver.find_element(By.ID, 'login-button').click()
-        time.sleep(3)
+        wait.until(EC.presence_of_element_located((By.XPATH, '//button[@id="react-burger-menu-btn"]')))
+        assert driver.find_element(By.CLASS_NAME, "title").text == "Products"
+
         driver.find_element(By.XPATH, '//button[@id="react-burger-menu-btn"]').click()
-        time.sleep(2)
+        wait.until(EC.presence_of_element_located((By.ID, 'logout_sidebar_link')))
+
         driver.find_element(By.ID, 'logout_sidebar_link').click()
-        time.sleep(3)
+        assert driver.current_url == 'https://www.saucedemo.com/'
 
 

@@ -2,7 +2,9 @@ from platform import android_ver
 
 import pytest
 from selenium import webdriver
-import time
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 from selenium.webdriver.firefox.options import Options
@@ -29,4 +31,6 @@ def private_driver():
 
 def test_incognito_firefox(private_driver):
     private_driver.get("https://the-internet.herokuapp.com/")
-    time.sleep(2)  # Just for demo purposes
+    main_site = WebDriverWait(private_driver, 10).until(
+        EC.visibility_of_element_located((By.CSS_SELECTOR, ".heading")))
+    assert main_site.text == "Welcome to the-internet"

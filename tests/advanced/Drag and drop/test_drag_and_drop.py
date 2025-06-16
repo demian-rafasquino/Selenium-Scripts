@@ -17,7 +17,8 @@ This test demonstrates:
 
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
-import time
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 def test_drag_and_drop(driver):
@@ -32,4 +33,5 @@ def test_drag_and_drop(driver):
 
     # Using action chains to drag and drop
     actions.drag_and_drop(item_to_drag, destination).perform()
-    time.sleep(3)
+    dropped = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, "div[id='simpleDropContainer'] p")))
+    assert dropped.text == "Dropped!"

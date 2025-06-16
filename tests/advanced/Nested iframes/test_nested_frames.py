@@ -20,7 +20,9 @@ This test demonstrates:
 """
 
 from selenium.webdriver.common.by import By
-import time
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 #EXPLANATION
 #Nested frames are frames inside of frames.
@@ -28,6 +30,7 @@ import time
 #I will go to the one in the middle of the big frame up top, and then to the big one on the bottom
 
 def test_nested_frames(driver):
+    wait = WebDriverWait(driver, 10)
     driver.get("https://the-internet.herokuapp.com/nested_frames")
 
     # Switching to top frame
@@ -37,7 +40,9 @@ def test_nested_frames(driver):
     driver.switch_to.frame("frame-middle")
 
     # Checking its content
-    content_of_frame = driver.find_element(By.ID, "content").text
+    content_of_frame = wait.until(
+        EC.presence_of_element_located((By.ID, "content"))
+    ).text
     print("Content in middle frame: ", content_of_frame)
 
     # Now I need to come out of this frame inside the top frame, to go to the bottom frame
@@ -48,6 +53,7 @@ def test_nested_frames(driver):
     driver.switch_to.frame("frame-bottom")
 
     # Checking the content
-    content_of_bottom = driver.find_element(By.TAG_NAME, "body").text
+    content_of_bottom = wait.until(
+        EC.presence_of_element_located((By.TAG_NAME, "body"))
+    ).text
     print("Content in bottom frame: ", content_of_bottom)
-    time.sleep(3)
